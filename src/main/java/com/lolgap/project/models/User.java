@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+
+
 @Data
 @Entity
 @Table(name = "users")
