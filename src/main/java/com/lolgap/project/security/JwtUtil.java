@@ -7,30 +7,32 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtUtil {
+public class JwtUtil
+{
     private static final String SECRET_KEY = "your_secret_key";
+    private static final String ISSUER = "lolgap";
+    private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
 
-
-    public String generateToken(String username) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+    public String generateToken(String username)
+    {
         return JWT.create()
-                .withIssuer("auth0")
+                .withIssuer(ISSUER)
                 .withSubject(username)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .sign(algorithm);
+                .sign(ALGORITHM);
     }
 
-    public DecodedJWT validateToken(String token) {
-        Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-        return JWT.require(algorithm)
-                .withIssuer("auth0")
+    public DecodedJWT validateToken(String token)
+    {
+        return JWT.require(ALGORITHM)
+                .withIssuer(ISSUER)
                 .build()
                 .verify(token);
     }
 
-    public String extractUsername(String token) {
-        DecodedJWT decodedJWT = validateToken(token);
-        return decodedJWT.getSubject();
+    public String extractUsername(String token)
+    {
+        return validateToken(token).getSubject();
     }
 }
