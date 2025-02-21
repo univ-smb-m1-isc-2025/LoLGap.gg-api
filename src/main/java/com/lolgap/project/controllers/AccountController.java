@@ -46,7 +46,7 @@ public class AccountController {
     @ResponseBody
     public ResponseEntity<?> login(@RequestBody Account account) {
         try {
-            Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword())
             );
             String token = jwtUtil.generateToken(account.getUsername());
