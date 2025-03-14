@@ -7,7 +7,8 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-public class Account {
+public class Account
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,5 +16,11 @@ public class Account {
     
     private String username;
     private String password;
-
+    private String riotGameName;
+    private String riotTagLine;
+    
+    private String riotPuuid;
+    
+    private String summonerId;
+    private String accountId;
 }

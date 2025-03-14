@@ -17,16 +17,19 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter
+{
 
     private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(
+    protected void doFilterInternal
+            (
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain)
+            FilterChain filterChain
+            )
             throws ServletException, IOException
     {
         String authorizationHeader = request.getHeader("Authorization");

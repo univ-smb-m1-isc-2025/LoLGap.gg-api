@@ -1,11 +1,17 @@
-# Utilisez une image de base avec Java 17
-FROM eclipse-temurin:21-jdk-alpine
-
-# Définissez le répertoire de travail dans le conteneur
+# Build stage
+FROM eclipse-temurin:21-jdk-alpine as build
 WORKDIR /app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+COPY src ./src
+COPY .env ./
+RUN ./mvnw clean package -DskipTests
 
-# Copiez le fichier JAR de l'application dans le conteneur
-COPY target/project-0.0.1-SNAPSHOT.jar app.jar
+# Run stage
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY --from=build /app/target/project-0.0.1-SNAPSHOT.jar app.jar
+COPY .env ./
 
 # Exposez le port sur lequel l'application va écouter
 EXPOSE 8080
