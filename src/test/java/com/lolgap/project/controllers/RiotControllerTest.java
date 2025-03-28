@@ -31,6 +31,7 @@ public class RiotControllerTest
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("unused")
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -43,6 +44,7 @@ public class RiotControllerTest
     @Autowired
     private JwtUtil jwtUtil;
 
+    @SuppressWarnings("removal")
     @MockBean
     private RiotAccountService riotAccountService;
 

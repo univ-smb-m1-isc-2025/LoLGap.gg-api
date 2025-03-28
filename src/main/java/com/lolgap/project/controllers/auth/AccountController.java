@@ -1,4 +1,4 @@
-package com.lolgap.project.controllers;
+package com.lolgap.project.controllers.auth;
 
 import com.lolgap.project.models.Account;
 import com.lolgap.project.repositories.AccountRepository;
@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -73,7 +75,13 @@ public class AccountController
                     new UsernamePasswordAuthenticationToken(account.getUsername(), account.getPassword())
             );
             String token = jwtUtil.generateToken(account.getUsername());
-            return ResponseEntity.ok().body(token);
+            Account userAccount = accountRepository.findByUsername(account.getUsername());
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", userAccount);
+            response.put("token", token);
+            
+            return ResponseEntity.ok(response);
         } catch (AuthenticationException e)
         {
             return ResponseEntity.status(401).body("Invalid credentials");

@@ -5,13 +5,21 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtUtil
 {
-    private static final String SECRET_KEY = "your_secret_key";
+    @Value("${jwt.secret}")
+    private String secretKey;
     private static final String ISSUER = "lolgap";
-    private static final Algorithm ALGORITHM = Algorithm.HMAC256(SECRET_KEY);
+    private static Algorithm algorithm;
+
+    @PostConstruct
+    public void init() {
+        algorithm = Algorithm.HMAC256(secretKey);
+    }
 
     public String generateToken(String username)
     {
@@ -20,12 +28,12 @@ public class JwtUtil
                 .withSubject(username)
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .sign(ALGORITHM);
+                .sign(algorithm);
     }
 
     public DecodedJWT validateToken(String token)
     {
-        return JWT.require(ALGORITHM)
+        return JWT.require(algorithm)
                 .withIssuer(ISSUER)
                 .build()
                 .verify(token);

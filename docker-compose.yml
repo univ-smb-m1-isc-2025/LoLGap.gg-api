@@ -13,6 +13,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tournoi_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
+    volumes:
+      - ./src:/app/src  # Sync source code with the container
+      - ./target:/app/target  # Sync target (build artifacts) with the container
 
   db:
     image: postgres:13

@@ -37,6 +37,7 @@ public class AccountControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @SuppressWarnings("removal")
     @MockBean
     private RiotAccountService riotAccountService;
 
@@ -46,7 +47,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    void whenRegisterWithValidData_thenSuccess() throws Exception 
+    void whenRegisterWithValidData_thenSuccess() throws Exception
     {
         // TEST DATA
         Account newAccount = new Account();
