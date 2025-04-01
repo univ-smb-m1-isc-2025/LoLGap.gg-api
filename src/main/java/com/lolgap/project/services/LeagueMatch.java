@@ -164,4 +164,37 @@ public class LeagueMatch
                         .collect(Collectors.toList()));
             });
     }
+
+    // Récupérer l'historique des matchs par username et queue ID
+    public CompletableFuture<List<String>> ofUsernameByQueue(String username, int queueId)
+    {
+        return leagueAccount.ofUsername(username)
+            .thenCompose(account -> this.ofPuuidByQueue(account.getPuuid(), queueId));
+    }
+
+    // Récupérer les derniers matchs avec détails par username et queue ID
+    public CompletableFuture<List<MatchDetailsDTO>> ofUsernameWithDetailsByQueue(String username, int queueId, int count)
+    {
+        return ofUsernameByQueue(username, queueId)
+            .thenCompose(matchIds -> {
+                List<CompletableFuture<MatchDetailsDTO>> futures = matchIds.stream()
+                    .limit(Math.min(count, 5))
+                    .map(matchId -> detailsOfMatch(matchId)
+                        .orTimeout(10, TimeUnit.SECONDS))
+                    .collect(Collectors.toList());
+
+                return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                    .orTimeout(30, TimeUnit.SECONDS)
+                    .thenApply(v -> futures.stream()
+                        .map(future -> {
+                            try {
+                                return future.get();
+                            } catch (Exception e) {
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList()));
+            });
+    }
 }

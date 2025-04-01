@@ -32,7 +32,7 @@ public class LeagueMeMatchController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
             List<MatchDetailsDTO> matches = leagueMatch.ofUsernameWithDetails(auth.getName(), count).get();
-            return ResponseEntity.ok(matches);
+            return ResponseEntity.ok("matches");
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -45,6 +45,30 @@ public class LeagueMeMatchController {
             return ResponseEntity.ok(match);
         } catch (Exception e) {
             System.out.println(e);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/queue/{queueId}")
+    public ResponseEntity<?> getMatchHistoryByQueue(@PathVariable int queueId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            List<String> matches = leagueMatch.ofUsernameByQueue(auth.getName(), queueId).get();
+            return ResponseEntity.ok(matches);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/queue/{queueId}/details")
+    public ResponseEntity<?> getMatchHistoryWithDetailsByQueue(
+            @PathVariable int queueId,
+            @RequestParam(defaultValue = "5") int count) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            List<MatchDetailsDTO> matches = leagueMatch.ofUsernameWithDetailsByQueue(auth.getName(), queueId, count).get();
+            return ResponseEntity.ok(matches);
+        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
