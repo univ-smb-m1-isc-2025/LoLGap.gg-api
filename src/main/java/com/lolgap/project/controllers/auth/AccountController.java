@@ -3,7 +3,7 @@ package com.lolgap.project.controllers.auth;
 import com.lolgap.project.models.Account;
 import com.lolgap.project.repositories.AccountRepository;
 import com.lolgap.project.security.JwtUtil;
-import com.lolgap.project.services.RiotAccountService;
+import com.lolgap.project.services.RiotAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +25,7 @@ public class AccountController
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-    private final RiotAccountService riotAccountService;
+    private final RiotAccount riotAccount;
 
     @GetMapping
     @ResponseBody
@@ -55,7 +55,7 @@ public class AccountController
         
         try
         {
-            newAccount = riotAccountService.enrichAccountWithRiotInfo(newAccount);
+            newAccount = riotAccount.enrich(newAccount).join();
             newAccount.setPassword(passwordEncoder.encode(newAccount.getPassword()));
             return ResponseEntity.ok(accountRepository.save(newAccount));
         } catch (Exception e)
