@@ -32,7 +32,7 @@ public class LeagueMeMatchController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
             List<MatchDetailsDTO> matches = leagueMatch.ofUsernameWithDetails(auth.getName(), count).get();
-            return ResponseEntity.ok("matches");
+            return ResponseEntity.ok(matches);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
