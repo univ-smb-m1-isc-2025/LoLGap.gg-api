@@ -25,6 +25,7 @@ public class LeagueMeRankController
             List<LeagueEntryDTO> ranks = leagueRank.ofUsername(auth.getName()).get();
             return ResponseEntity.ok(ranks);
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.notFound().build();
         }
     }

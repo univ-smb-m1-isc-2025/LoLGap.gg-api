@@ -43,7 +43,7 @@ public class LeagueMatch
             try
             {
                 return riotClient.get()
-                    .uri("/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=7", puuid)
+                    .uri("/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=5", puuid)
                     .header("X-Riot-Token", riotApiKey)
                     .retrieve()
                     .bodyToMono(new ParameterizedTypeReference<List<String>>() {})

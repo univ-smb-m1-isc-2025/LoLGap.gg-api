@@ -8,11 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -27,12 +28,6 @@ public class AccountController
     private final AuthenticationManager authenticationManager;
     private final RiotAccount riotAccount;
 
-    @GetMapping
-    @ResponseBody
-    public List<Account> listAll()
-    {
-        return accountRepository.findAll();
-    }
 
     @PostMapping("/register")
     @ResponseBody
@@ -45,7 +40,7 @@ public class AccountController
         
         if (accountRepository.findByUsername(newAccount.getUsername()) != null)
         {
-            return ResponseEntity.badRequest().body("Username already taken");
+            return ResponseEntity.badRequest().body("Username already taken HAHA");
         }
 
         if (newAccount.getRiotGameName() == null || newAccount.getRiotTagLine() == null)
@@ -85,6 +80,26 @@ public class AccountController
         } catch (AuthenticationException e)
         {
             return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
+
+    @GetMapping("/me")
+    @ResponseBody
+    public ResponseEntity<?> listAll()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        try {
+            Account account = accountRepository.findByUsername(username);
+            
+            if (account == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(account);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

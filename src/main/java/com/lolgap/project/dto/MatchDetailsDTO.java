@@ -23,6 +23,8 @@ public class MatchDetailsDTO {
     
     @Data
     public static class ParticipantDTO {
+        private String championName;
+        private String championId;
         private int kills;
         private int deaths;
         private int assists;
