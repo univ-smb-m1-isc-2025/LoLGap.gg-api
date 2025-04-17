@@ -64,16 +64,16 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
             "http://localhost:5173",
             "http://localhost:3000",
-            "http://www.logap.gg.oups.net",
-            "https://www.logap.gg.oups.net",
-            "http://logap.gg.oups.net",
-            "https://logap.gg.oups.net",
-            "www.logap.gg.oups.net",
-            "logap.gg.oups.net"
+            "http://www.lolgap.gg.oups.net",
+            "https://www.lolgap.gg.oups.net",
+            "http://lolgap.gg.oups.net",
+            "https://lolgap.gg.oups.net",
+            "http://api.lolgap.gg.oups.net",
+            "https://api.lolgap.gg.oups.net"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         
